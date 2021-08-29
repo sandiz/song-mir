@@ -1,0 +1,68 @@
+@import '~@fortawesome/fontawesome-free/css/all.css';
+@import "~@blueprintjs/core/lib/scss/variables";
+
+$font-family-default: "pt sans";
+$font-family-monospace: "Inconsolata";
+$font-family-heading: "pt sans";
+
+html,
+body,
+#app-root {
+    font-family: $font-family-default, sans-serif;
+    user-select: none;
+    overflow: hidden;
+    height: 100%;
+    -webkit-app-region: drag;
+}
+
+.number {
+  font-family: $font-family-monospace, monospace;
+}
+
+.app-body {
+  background-color: $pt-app-background-color;
+
+  &.bp4-dark {
+      background-color: $pt-dark-app-background-color;
+  }
+}
+
+.error-callout {
+  display: block;
+  z-index: 10;
+  border-radius: 7px;
+  overflow: auto;
+}
+
+.error-pre {
+  background-color: rgba(16, 22, 26, 0.95) !important;
+  margin-right: 20px;
+}
+
+.error-button-detail {
+  position: absolute;
+  right: 35px;
+  top: 5px;
+  border: 1px solid rgba(16, 22, 26, 0.5);
+}
+
+.error-button-report {
+  position: absolute;
+  right: 105px;
+  top: 5px;
+  border: 1px solid rgba(16, 22, 26, 0.5);
+}
+
+.tall-divider {
+  height: 42px;
+}
+
+.bp4-text-larger {
+  $pt-font-size-larger: $pt-grid-size * 2.2;
+  font-size: $pt-font-size-larger;
+}
+
+.bp4-text-larger-2 {
+  $pt-font-size-larger: $pt-grid-size * 3.2;
+  font-size: $pt-font-size-larger;
+}

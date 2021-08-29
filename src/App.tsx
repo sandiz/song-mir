@@ -1,57 +1,46 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
-import './App.css';
+import { Classes, Dialog } from '@blueprintjs/core';
+import { FocusStyleManager } from "@blueprintjs/core";
+import { Fragment, useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from 'src/lib/hooks';
+import { setDarkMode } from 'src/lib/reducers/ui';
+import ErrorBoundary from './components/errorBoundary';
+import { MediaPlayer } from './features/mediaPlayer/mediaPlayer';
 
+
+import '@blueprintjs/icons/lib/css/blueprint-icons.css'
+import '@blueprintjs/core/lib/css/blueprint.css'
+import 'typeface-inconsolata'
+import 'typeface-pt-sans'
+import 'src/App.scss';
+
+const darkModeQuery = '(prefers-color-scheme: dark)';
 function App() {
+  const darkMode = useAppSelector((state) => state.ui.darkMode);
+  const dialog = useAppSelector((state) => state.ui.dialog);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(setDarkMode(window.matchMedia(darkModeQuery).matches));
+    window.matchMedia(darkModeQuery).addEventListener('change', (e) => {
+      dispatch(setDarkMode(e.matches));
+    });
+  })
+
+  document.body.className = "app-body " + (darkMode ? Classes.DARK : "");
+  FocusStyleManager.onlyShowFocusOnTabs();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
-    </div>
+    <Fragment>
+      <ErrorBoundary className="media-player">
+        <MediaPlayer />
+      </ErrorBoundary>
+      <Dialog
+        isOpen={dialog.id !== null}
+        isCloseButtonShown
+        lazy
+        title={''}
+      />
+    </Fragment>
   );
 }
 

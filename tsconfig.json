@@ -18,9 +18,21 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "removeComments": true,
+    "sourceMap": true,
+    "typeRoots": [
+      "./src/@types",
+      "./node_modules/@types"
+    ]
   },
   "include": [
     "src"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/node_modules/*",
+    "**/*.spec.ts"
   ]
 }
