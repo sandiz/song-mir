@@ -7,7 +7,7 @@ global.matchMedia = global.matchMedia || function () {
   return {
     matches: true,
     addEventListener: jest.fn(),
-    removeListener: jest.fn(),
+    removeEventListener: jest.fn(),
   };
 };
 

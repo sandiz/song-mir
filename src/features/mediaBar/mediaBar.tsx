@@ -1,14 +1,18 @@
 import { Button, Card, Classes, Elevation, Icon, Navbar } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
+import ErrorBoundary from "src/components/errorBoundary";
 import { AlbumArt, MainMenu, MediaControls, MediaDetails, MediaProgress } from "src/components/functional";
-import './mediaPlayer.scss';
+import { useAppSelector } from "src/lib/hooks";
+import './mediaBar.scss';
 
-export function MediaPlayer() {
+function MediaBarComponent() {
+	const metadata = useAppSelector((state) => state.metadata);
+
 	return (
 		<Card className='media-player' elevation={Elevation.FOUR}>
 			<MainMenu />
 			<Navbar.Divider className="tall-divider" />
-			<AlbumArt url={''} className="album-art-container" />
+			<AlbumArt url={metadata.image} className="album-art-container" />
 			<MediaDetails className="media-details-container" />
 			<Navbar.Divider className="tall-divider" />
 			<MediaControls className="media-controls-container" />
@@ -17,5 +21,13 @@ export function MediaPlayer() {
 			<Navbar.Divider className="tall-divider" />
 			<Button icon={<Icon icon={IconNames.VolumeUp} size={20} />} large className={Classes.ELEVATION_2} />
 		</Card>
+	)
+}
+
+export function MediaBar() {
+	return (
+		<ErrorBoundary className="media-player">
+			<MediaBarComponent />
+		</ErrorBoundary>
 	)
 }

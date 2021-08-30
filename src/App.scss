@@ -66,3 +66,7 @@ body,
   $pt-font-size-larger: $pt-grid-size * 3.2;
   font-size: $pt-font-size-larger;
 }
+
+.tile-root {
+  padding: 20px;
+}

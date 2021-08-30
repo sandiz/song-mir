@@ -3,9 +3,6 @@ import uiReducer, { UIState, setDarkMode } from "./ui";
 describe("ui reducer", () => {
   const initialState: UIState = {
     darkMode: false,
-    media: {
-      state: "paused",
-    },
     dialog: {
       id: null,
       state: "closed",
@@ -15,9 +12,6 @@ describe("ui reducer", () => {
   it("should handle initial state", () => {
     expect(uiReducer(undefined, { type: "unknown" })).toEqual({
       darkMode: false,
-      media: {
-        state: "paused",
-      },
       dialog: {
         id: null,
         state: "closed",

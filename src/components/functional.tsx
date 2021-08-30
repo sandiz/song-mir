@@ -5,11 +5,14 @@ import * as nothumb from 'src/assets/nothumb.jpg';
 import { ExtClasses } from "src/lib/types";
 import classNames from "classnames";
 import { useAppSelector } from "src/lib/hooks";
-import { MediaStatesEnum } from "src/lib/reducers/ui";
+import { MediaStatesEnum } from "src/lib/reducers/media";
 import SliderExtended from "./extended";
 import { sec2time } from "src/lib/utils";
+import { importLocalFile } from "src/lib/mediaUtils";
+import { closeProject } from "src/lib/projectUtils";
+import MediaPlayer from "src/lib/mediaPlayer";
 
-type BasicProps = {
+export type BasicProps = {
 	className?: string;
 }
 export function AlbumArt(props: BasicProps & {
@@ -17,43 +20,45 @@ export function AlbumArt(props: BasicProps & {
 	onClick?(): void;
 	interactive?: boolean;
 }): React.ReactElement {
+
+	const elevation = props.url ? Elevation.FOUR : Elevation.TWO;
+
 	return (
 		<div className={props.className}>
-			<Card interactive={typeof (props.interactive) !== 'undefined' ? props.interactive : true} elevation={Elevation.TWO} className="album-art-card" onClick={props.onClick}>
-				<img src={props.url === "" ? nothumb.default : props.url} alt="album art" width="100%" height="100%" />
+			<Card interactive={typeof (props.interactive) !== 'undefined' ? props.interactive : true} elevation={elevation} className="album-art-card" onClick={props.onClick}>
+				<img src={!props.url ? nothumb.default : props.url} alt="album art" width="100%" height="100%" />
 			</Card>
 		</div>
 	);
 }
 
 export function MediaDetails(props: BasicProps): React.ReactElement {
-	const artist = 'Rashid Khan';
-	const album = 'Aaja Nachle';
-	const title = 'O Re Piya';
+	const metadata = useAppSelector((state) => state.metadata);
+	const { artist, album, title = '-' } = metadata;
 
 	return (
 		<div className={props.className}>
 			<Text ellipsize className={ExtClasses.TEXT_LARGER}>{title}</Text>
-			<Text>
-				<span className={Classes.TEXT_MUTED}>from</span>
-				<span>&nbsp;{album}</span>
-				<span className={Classes.TEXT_MUTED}>&nbsp;by</span>
-				<span>&nbsp;{artist}</span>
-			</Text>
+			{
+				title === '-'
+					? <Text>No Media Loaded</Text>
+					: <Text>
+						<span className={Classes.TEXT_MUTED}>from</span>
+						<span>&nbsp;{album}</span>
+						<span className={Classes.TEXT_MUTED}>&nbsp;by</span>
+						<span>&nbsp;{artist}</span>
+					</Text>
+			}
 		</div>
 	)
 }
 
-export function MediaControls(props: BasicProps & {
-	rewind?: () => void;
-	ffwd?: () => void;
-	play?: () => void;
-}) {
-	const state = useAppSelector((state) => state.ui.media.state);
+export function MediaControls(props: BasicProps) {
+	const { state } = useAppSelector((state) => state.media);
 
 	return (
 		<div className={props.className}>
-			<Button icon={<Icon icon={IconNames.FastBackward} size={20} />} large className={Classes.ELEVATION_2} onClick={props.rewind} />
+			<Button icon={<Icon icon={IconNames.FastBackward} size={20} />} large className={Classes.ELEVATION_2} onClick={() => MediaPlayer.rewind()} />
 
 			<Button
 				type="button"
@@ -64,10 +69,10 @@ export function MediaControls(props: BasicProps & {
 						size={35} />
 				)}
 				className={classNames(Classes.ELEVATION_2, "media-play-button")}
-				onClick={props.play}
+				onClick={MediaPlayer.playPause}
 			/>
 
-			<Button icon={<Icon icon={IconNames.FastForward} size={20} />} large className={Classes.ELEVATION_2} onClick={props.ffwd} />
+			<Button icon={<Icon icon={IconNames.FastForward} size={20} />} large className={Classes.ELEVATION_2} onClick={() => MediaPlayer.ffwd()} />
 		</div>
 	)
 }
@@ -132,7 +137,7 @@ export function MainMenu(props: BasicProps) {
 				text={menuTextElement("Close Project")}
 				disabled={saveDisabled}
 				icon={IconNames.FolderClose}
-				onClick={console.log} />
+				onClick={closeProject} />
 			<MenuDivider />
 			<MenuItem
 				text={menuTextElement(`[ Analyse ]`)}
@@ -161,7 +166,7 @@ export function MainMenu(props: BasicProps) {
 				<MenuItem
 					text={"from Local File"}
 					icon={IconNames.Download}
-					onClick={console.log} />
+					onClick={importLocalFile} />
 				<MenuItem
 					text={"from URL"}
 					icon={IconNames.Cloud}

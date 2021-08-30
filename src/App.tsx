@@ -1,12 +1,10 @@
 import { Classes, Dialog } from '@blueprintjs/core';
 import { FocusStyleManager } from "@blueprintjs/core";
-import { Fragment, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from 'src/lib/hooks';
 import { setDarkMode } from 'src/lib/reducers/ui';
-import ErrorBoundary from './components/errorBoundary';
-import { MediaPlayer } from './features/mediaPlayer/mediaPlayer';
-
-
+import { MediaBar } from './features/mediaBar/mediaBar';
+import { Waveform } from './features/waveform/waveform';
 import '@blueprintjs/icons/lib/css/blueprint-icons.css'
 import '@blueprintjs/core/lib/css/blueprint.css'
 import 'typeface-inconsolata'
@@ -20,27 +18,34 @@ function App() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(setDarkMode(window.matchMedia(darkModeQuery).matches));
-    window.matchMedia(darkModeQuery).addEventListener('change', (e) => {
+    const _matchQuery = (e: { matches: boolean }) => {
       dispatch(setDarkMode(e.matches));
-    });
+    }
+
+    _matchQuery(window.matchMedia(darkModeQuery));
+    window.matchMedia(darkModeQuery).addEventListener('change', _matchQuery);
+
+    return () => {
+      window.matchMedia(darkModeQuery).removeEventListener('change', _matchQuery)
+    }
   })
 
   document.body.className = "app-body " + (darkMode ? Classes.DARK : "");
   FocusStyleManager.onlyShowFocusOnTabs();
 
   return (
-    <Fragment>
-      <ErrorBoundary className="media-player">
-        <MediaPlayer />
-      </ErrorBoundary>
+    <>
+      <div className="tile-root">
+        <Waveform />
+      </div>
+      <MediaBar />
       <Dialog
         isOpen={dialog.id !== null}
         isCloseButtonShown
         lazy
         title={''}
       />
-    </Fragment>
+    </>
   );
 }
 

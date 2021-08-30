@@ -7,14 +7,8 @@
     "@blueprintjs/select": "^4.0.0-alpha.0",
     "@fortawesome/fontawesome-free": "^5.15.4",
     "@reduxjs/toolkit": "^1.5.1",
-    "@testing-library/jest-dom": "^5.14.1",
-    "@testing-library/react": "^12.0.0",
-    "@types/jest": "^27.0.1",
-    "@types/node": "^16.7.5",
-    "@types/react": "^17.0.19",
-    "@types/react-dom": "^17.0.9",
-    "@types/react-redux": "^7.1.7",
     "classnames": "^2.3.1",
+    "music-metadata-browser": "^2.5.0",
     "node-sass": "4.14.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -46,5 +40,16 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^12.0.0",
+    "@types/jest": "^27.0.1",
+    "@types/node": "^16.7.5",
+    "@types/react": "^17.0.19",
+    "@types/react-dom": "^17.0.9",
+    "@types/react-redux": "^7.1.7",
+    "@types/wavesurfer.js": "^5.2.0",
+    "@types/wicg-file-system-access": "^2020.9.2"
   }
 }
