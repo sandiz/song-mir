@@ -6,6 +6,7 @@ export interface MediaMetadata {
   title: string | undefined;
   image: string | undefined;
   year: number | undefined;
+  loaded: boolean;
 }
 
 const initialState: MediaMetadata = {
@@ -14,18 +15,22 @@ const initialState: MediaMetadata = {
   title: undefined,
   image: undefined,
   year: undefined,
+  loaded: false,
 };
 
 export const metadataSlice = createSlice({
   name: "metadata",
   initialState,
   reducers: {
-    setMetadata: (state, action: PayloadAction<MediaMetadata>) => {
+    setMetadata: (state, action: PayloadAction<Partial<MediaMetadata>>) => {
       state.title = action.payload.title;
       state.artist = action.payload.artist;
       state.album = action.payload.album;
       state.year = action.payload.year;
-      state.image = "data:image/jpeg;base64," + action.payload.image;
+      state.image = action.payload.image
+        ? "data:image/jpeg;base64," + action.payload.image
+        : undefined;
+      state.loaded = true;
     },
     resetMetadata: (state) => {
       state.artist = undefined;
@@ -33,6 +38,7 @@ export const metadataSlice = createSlice({
       state.title = undefined;
       state.image = undefined;
       state.year = undefined;
+      state.loaded = false;
     },
   },
 });

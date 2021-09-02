@@ -4,3 +4,9 @@ export class ExtClasses {
   public static DARK_BACKGROUND_COLOR = "#30404E";
   public static BACKGROUND_COLOR = "#FFFFFF";
 }
+
+export const FONT_FAMILY = {
+  DEFAULT: "pt sans",
+  MONOSPACE: "inconsolata",
+  HEADING: "pt sans",
+};

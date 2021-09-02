@@ -4,6 +4,7 @@ import {
   Action,
   Middleware,
 } from "@reduxjs/toolkit";
+import { connect, ConnectedProps } from "react-redux";
 import reducers from "./reducers/reducers";
 
 const middlewares: Middleware<{}, any>[] = [];
@@ -35,3 +36,9 @@ export type AppThunk<ReturnType = void> = ThunkAction<
   unknown,
   Action<string>
 >;
+const mapStateToProps = (state: RootState) => state;
+export const connector = connect(mapStateToProps, null, null, {
+  forwardRef: true,
+});
+export type PropsFromRedux = ConnectedProps<typeof connector>;
+

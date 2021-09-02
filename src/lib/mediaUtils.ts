@@ -4,6 +4,7 @@ import { setMediaPlaybackState, MediaStatesEnum } from "./reducers/media";
 import { store } from "./store";
 import { DEBUG, ERROR, INFO } from "./utils";
 import { setMetadata } from "./reducers/metadata";
+import { createTempProject } from "./projectUtils";
 
 export async function importLocalFile() {
   if (window.isSecureContext) {
@@ -38,8 +39,11 @@ export async function importLocalFile() {
       }
 
       store.dispatch(setMetadata({ title, artist, album, year, image }));
+      DEBUG("metadata object", metadata);
       INFO("media loaded succesfully", fileHandle.name);
       INFO("song: %s album: %s artist: %s", title, album, artist);
+
+      createTempProject();
     } catch (ex) {
       ERROR("importLocalFile", "failed to import file", ex);
     }

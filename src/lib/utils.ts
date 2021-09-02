@@ -45,3 +45,12 @@ export const getGradient = (type: string, ctx: CanvasRenderingContext2D) => {
       return linGrad;
   }
 };
+
+export const getGradientArray = (type: string) => {
+  switch (type) {
+    case "dark":
+      return ["rgba(255, 255, 255, 1.000)", "rgba(183, 183, 183, 1.000)"];
+    default:
+      return ["rgba(0, 0, 0, 1.000)", "rgba(72, 72, 72, 1.000)"];
+  }
+};
